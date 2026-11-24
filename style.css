@@ -350,17 +350,72 @@ h1,h2,h3{ font-family: var(--font-display); margin:0; }
 /* =========================================================
    CONTACT
 ========================================================= */
-.contact-lede{ max-width: 56ch; color: rgba(250,247,242,0.75); font-size:1.05rem; margin-bottom: 2.4rem; }
-.contact-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.contact-lede{
+  max-width: 56ch;
+  color: rgba(250,247,242,0.75);
+  font-size: clamp(.95rem, 1.2vw + .6rem, 1.05rem);
+  margin-bottom: 2.4rem;
+}
+
+.contact-grid{
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 1.25rem;
+}
+
 .contact-card{
-  display:flex; flex-direction:column; gap:.5rem;
-  background: rgba(250,247,242,0.04); border: 1px solid rgba(250,247,242,0.14);
-  border-radius: var(--radius); padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  min-width: 0; /* lets grid children shrink instead of overflowing */
+  background: rgba(250,247,242,0.04);
+  border: 1px solid rgba(250,247,242,0.14);
+  border-radius: var(--radius);
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  text-decoration: none;
+  color: inherit;
   transition: border-color .2s var(--ease), transform .2s var(--ease), background .2s var(--ease);
 }
-.contact-card:hover{ border-color: var(--cyan); transform: translateY(-3px); background: rgba(0,184,217,0.06); }
-.contact-label{ font-family: var(--font-mono); font-size:.75rem; color: var(--cyan); text-transform: uppercase; letter-spacing:.08em; }
-.contact-value{ font-size: 1rem; word-break: break-word; }
+
+.contact-card:hover,
+.contact-card:focus-visible{
+  border-color: var(--cyan);
+  transform: translateY(-3px);
+  background: rgba(0,184,217,0.06);
+}
+
+.contact-label{
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.contact-value{
+  font-size: clamp(.85rem, 1.1vw, 1rem);
+  overflow-wrap: anywhere; /* only breaks if the text truly cannot fit */
+}
+
+/* Tablets: email takes the full first row, the other two sit side by side */
+@media (max-width: 900px){
+  .contact-grid{ grid-template-columns: repeat(2, 1fr); }
+  .contact-card:first-child{ grid-column: 1 / -1; }
+  .contact-value{ font-size: 1rem; }
+}
+
+/* Phones: single column */
+@media (max-width: 560px){
+  .contact-grid{ grid-template-columns: 1fr; gap: 1rem; }
+  .contact-card:first-child{ grid-column: auto; }
+  .contact-value{ font-size: .95rem; }
+}
+
+/* Respect users who turn off motion */
+@media (prefers-reduced-motion: reduce){
+  .contact-card{ transition: none; }
+  .contact-card:hover{ transform: none; }
+}
 
 /* =========================================================
    FOOTER
